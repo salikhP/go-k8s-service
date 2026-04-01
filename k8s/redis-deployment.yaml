@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: redis
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: redis
+    template:
+        metadata:
+            labels:
+                app: redis
+        spec:
+            containers:
+            - name: redis
+              image: redis:8.4-alpine
+              args: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+              ports:
+                  -   containerPort: 6379
+              volumeMounts:
+                  -   name: redis-config
+                      mountPath: /usr/local/etc/redis
+                      subPath: redis.conf
+                  -   name: redis-storage
+                      mountPath: /data
+            volumes:
+            - name: redis-config-volume
+              configMap:
+                  name: redis-config
+            - name: redis-storage
+              persistentVolumeClaim:
+                  claimName: redis-pvc

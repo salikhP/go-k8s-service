@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
             - name: go-web-app
-              image: b1ame/k8s-go-app:v1
+              image: b1ame/k8s-go-app:v2
               ports:
               - containerPort: 8080
               env:
